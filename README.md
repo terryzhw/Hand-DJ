@@ -34,7 +34,7 @@ Your webcam watches your hands. The program sees your gestures (like pinching) a
     pip install opencv-python mediapipe numpy pygame pydub
     ```
 4.  **Add Music:** Put an MP3 (or WAV) audio file in the same folder.
-    * The program will try to play files named "owa.mp3", "test\_audio.wav", "audio.mp3", or "music.mp3" first. You can edit `HandDJ.py` to use your specific file name if needed.
+    * The program will try to play files named "insert_mp3_here.mp3", "test\_audio.wav", "audio.mp3", or "music.mp3" first. You can edit `HandDJ.py` to use your specific file name if needed.
 
 ### How To Run:
 
