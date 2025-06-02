@@ -389,7 +389,7 @@ class HandDJ:
 
 if __name__ == "__main__":
     try:
-        audio_files = ["owa.mp3", "test_audio.wav", "audio.mp3", "music.mp3"]
+        audio_files = ["insert_mp3_here.mp3", "test_audio.wav", "audio.mp3", "music.mp3"]
         audio_file = None
         
         for file in audio_files:
