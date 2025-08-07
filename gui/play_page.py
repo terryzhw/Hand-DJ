@@ -18,20 +18,20 @@ class PlayPage(BasePage):
 
     def setup_content(self, layout):
         # Sets up content for the page
-        instructions_label = self.create_instructions_label()
+        instructions = self.create_instructions_label()
         self.youtube_link_input = self.create_youtube_link_input()
-        play_button = self.create_run_button()
+        run_btn = self.create_run_button()
 
-        layout.insertWidget(1, instructions_label)
+        layout.insertWidget(1, instructions)
         layout.insertWidget(2, self.youtube_link_input)
-        layout.insertWidget(3, play_button)
+        layout.insertWidget(3, run_btn)
 
     def create_instructions_label(self):
         # Creates label for instructions
-        instructions_label = QLabel("Insert YouTube Link")
-        instructions_label.setFont(QFont("Arial", SUBTITLE_FONT_SIZE))
-        instructions_label.setAlignment(Qt.AlignCenter)
-        return instructions_label
+        instructions = QLabel("Insert YouTube Link")
+        instructions.setFont(QFont("Arial", SUBTITLE_FONT_SIZE))
+        instructions.setAlignment(Qt.AlignCenter)
+        return instructions
 
     def create_youtube_link_input(self):
         # Creates input field to insert YouTube link
@@ -43,11 +43,11 @@ class PlayPage(BasePage):
 
     def create_run_button(self):
         # Creates button to run HandDJ
-        run_button = QPushButton("Run")
-        run_button.setFont(QFont("Arial", BUTTON_FONT_SIZE))
-        run_button.setStyleSheet(BUTTON_STYLE)
-        run_button.clicked.connect(self.run_hand_dj)
-        return run_button
+        run_btn = QPushButton("Run")
+        run_btn.setFont(QFont("Arial", BUTTON_FONT_SIZE))
+        run_btn.setStyleSheet(BUTTON_STYLE)
+        run_btn.clicked.connect(self.run_hand_dj)
+        return run_btn
 
     def run_hand_dj(self):
         # Retrieves YouTube link, process audio, and starts overlay

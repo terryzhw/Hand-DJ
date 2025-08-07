@@ -11,10 +11,10 @@ from gui.windows import MainWindow
 
 def main():
     try:
-        application = QApplication(sys.argv)
-        main_window = MainWindow()
-        main_window.show()
-        sys.exit(application.exec_())
+        app = QApplication(sys.argv)
+        window = MainWindow()
+        window.show()
+        sys.exit(app.exec_())
     except Exception as error:
         QMessageBox.critical(None, "Error", f"Failed to start: {error}")
         sys.exit(1)

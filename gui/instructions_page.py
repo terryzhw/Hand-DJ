@@ -29,8 +29,8 @@ class InstructionsPage(BasePage):
         content_widget = QWidget()
         content_layout = QVBoxLayout()
 
-        instructions_label = self.create_instructions_label()
-        content_layout.addWidget(instructions_label)
+        instructions = self.create_instructions_label()
+        content_layout.addWidget(instructions)
 
         content_widget.setLayout(content_layout)
         return content_widget
@@ -40,8 +40,8 @@ class InstructionsPage(BasePage):
         instructions_text = """
         <h1>WIP</h1>
         """
-        instructions_label = QLabel(instructions_text)
-        instructions_label.setFont(QFont("Arial", 12))
-        instructions_label.setWordWrap(True)
-        instructions_label.setStyleSheet("color: white; padding: 10px;")
-        return instructions_label
+        instructions = QLabel(instructions_text)
+        instructions.setFont(QFont("Arial", 12))
+        instructions.setWordWrap(True)
+        instructions.setStyleSheet("color: white; padding: 10px;")
+        return instructions

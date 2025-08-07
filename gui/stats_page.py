@@ -21,8 +21,8 @@ class StatsPage(BasePage):
         self.main_layout.setContentsMargins(20, 20, 20, 20)
         self.main_layout.setSpacing(20)
 
-        title_label = self.create_title_label()
-        self.main_layout.addWidget(title_label)
+        title = self.create_title_label()
+        self.main_layout.addWidget(title)
         self.main_layout.addStretch()
 
         self.setup_content(self.main_layout)
@@ -33,13 +33,13 @@ class StatsPage(BasePage):
 
     def setup_content(self, layout):
 
-        song_info_widget = self.create_song_info_widget()
-        stats_widget = self.create_stats_widget()
-        controls_widget = self.create_controls_widget()
+        song_info = self.create_song_info_widget()
+        stats = self.create_stats_widget()
+        controls = self.create_controls_widget()
         
-        layout.insertWidget(1, song_info_widget)
-        layout.insertWidget(2, stats_widget)
-        layout.insertWidget(3, controls_widget)
+        layout.insertWidget(1, song_info)
+        layout.insertWidget(2, stats)
+        layout.insertWidget(3, controls)
 
     def create_stats_widget(self):
 

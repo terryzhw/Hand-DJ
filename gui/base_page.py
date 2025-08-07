@@ -19,15 +19,15 @@ class BasePage(QWidget):
         self.main_layout.setContentsMargins(20, 20, 20, 20)
         self.main_layout.setSpacing(20)
 
-        title_label = self.create_title_label()
-        self.main_layout.addWidget(title_label)
+        title = self.create_title_label()
+        self.main_layout.addWidget(title)
         self.main_layout.addStretch()
 
         self.setup_content(self.main_layout)
 
         self.main_layout.addStretch()
-        back_button = self.create_back_button()
-        self.main_layout.addWidget(back_button)
+        back_btn = self.create_back_button()
+        self.main_layout.addWidget(back_btn)
 
         self.setLayout(self.main_layout)
 
@@ -37,15 +37,15 @@ class BasePage(QWidget):
 
     def create_title_label(self):
         # Creates title page
-        title_label = QLabel(self.page_title)
-        title_label.setFont(QFont("Arial", TITLE_FONT_SIZE, QFont.Bold))
-        title_label.setAlignment(Qt.AlignCenter)
-        return title_label
+        title = QLabel(self.page_title)
+        title.setFont(QFont("Arial", TITLE_FONT_SIZE, QFont.Bold))
+        title.setAlignment(Qt.AlignCenter)
+        return title
 
     def create_back_button(self):
         # Creates back button
-        back_button = QPushButton("Back")
-        back_button.setFont(QFont("Arial", BUTTON_FONT_SIZE))
-        back_button.setStyleSheet(BUTTON_STYLE)
-        back_button.clicked.connect(self.on_back_callback)
-        return back_button
+        back_btn = QPushButton("Back")
+        back_btn.setFont(QFont("Arial", BUTTON_FONT_SIZE))
+        back_btn.setStyleSheet(BUTTON_STYLE)
+        back_btn.clicked.connect(self.on_back_callback)
+        return back_btn
