@@ -1,5 +1,3 @@
-
-
 import cv2
 import time
 import os
@@ -37,6 +35,12 @@ class DJController:
             'right': None
         }
         
+        # Control enable/disable flags
+        self.controls_enabled = {
+            'pitch': True,
+            'reverb': True,
+            'volume': True,
+        }
 
         if audio_file and os.path.exists(audio_file):
             self.pending_audio_file = audio_file
@@ -165,8 +169,9 @@ class DJController:
             self.previous_landmarks['left'] = smoothed_left
             
           
-            pitch = self.visualizer.draw_pitch_control(frame, smoothed_left)
-            self.audio_controller.smooth_pitch(pitch)
+            if self.controls_enabled.get('pitch', True):
+                pitch = self.visualizer.draw_pitch_control(frame, smoothed_left)
+                self.audio_controller.smooth_pitch(pitch)
         else:
    
             self.previous_landmarks['left'] = None
@@ -181,8 +186,9 @@ class DJController:
             self.previous_landmarks['right'] = smoothed_right
             
 
-            reverb = self.visualizer.draw_reverb_control(frame, smoothed_right)
-            self.audio_controller.smooth_reverb(reverb)
+            if self.controls_enabled.get('reverb', True):
+                reverb = self.visualizer.draw_reverb_control(frame, smoothed_right)
+                self.audio_controller.smooth_reverb(reverb)
         else:
   
             self.previous_landmarks['right'] = None
@@ -191,28 +197,31 @@ class DJController:
         if (self.hand_tracker.left_hand_present and self.hand_tracker.right_hand_present and
             self.previous_landmarks['left'] and self.previous_landmarks['right']):
     
-            volume = self.visualizer.draw_volume_control(
-                frame, 
-                self.previous_landmarks['left'], 
-                self.previous_landmarks['right']
-            )
-            self.audio_controller.smooth_volume(volume)
-            volume = self.visualizer.draw_volume_control(
-                frame, 
-                self.previous_landmarks['left'], 
-                self.previous_landmarks['right']
-            )
-            self.audio_controller.smooth_volume(volume)
+            if self.controls_enabled.get('volume', True):
+                volume = self.visualizer.draw_volume_control(
+                    frame, 
+                    self.previous_landmarks['left'], 
+                    self.previous_landmarks['right']
+                )
+                self.audio_controller.smooth_volume(volume)
+                # Duplicate call removed when control disabled; retain original behavior otherwise
+                volume = self.visualizer.draw_volume_control(
+                    frame, 
+                    self.previous_landmarks['left'], 
+                    self.previous_landmarks['right']
+                )
+                self.audio_controller.smooth_volume(volume)
 
     def update_controls(self, frame):
 
-        if self.hand_tracker.left_hand_present and self.hand_tracker.left_hand_landmarks:
+        if self.hand_tracker.left_hand_present and self.hand_tracker.left_hand_landmarks and self.controls_enabled.get('pitch', True):
             pitch = self.visualizer.draw_pitch_control(frame, self.hand_tracker.left_hand_landmarks)
             self.audio_controller.smooth_pitch(pitch)
-        if self.hand_tracker.right_hand_present and self.hand_tracker.right_hand_landmarks:
+        if self.hand_tracker.right_hand_present and self.hand_tracker.right_hand_landmarks and self.controls_enabled.get('reverb', True):
             reverb = self.visualizer.draw_reverb_control(frame, self.hand_tracker.right_hand_landmarks)
             self.audio_controller.smooth_reverb(reverb)
-        if self.hand_tracker.left_hand_present and self.hand_tracker.right_hand_present:
+        if (self.hand_tracker.left_hand_present and self.hand_tracker.right_hand_present and
+            self.controls_enabled.get('volume', True)):
             volume = self.visualizer.draw_volume_control(frame, self.hand_tracker.left_hand_landmarks, self.hand_tracker.right_hand_landmarks)
             self.audio_controller.smooth_volume(volume)
 
@@ -225,6 +234,24 @@ class DJController:
     def get_stats(self):
    
         return self.audio_controller.get_stats()
+
+    # Control toggles for GUI
+    def toggle_control(self, name: str) -> bool:
+        if name in self.controls_enabled:
+            self.controls_enabled[name] = not self.controls_enabled[name]
+        return self.controls_enabled.get(name, False)
+
+    def toggle_pitch_enabled(self) -> bool:
+        return self.toggle_control('pitch')
+
+    def toggle_reverb_enabled(self) -> bool:
+        return self.toggle_control('reverb')
+
+    def toggle_volume_enabled(self) -> bool:
+        return self.toggle_control('volume')
+
+    def is_control_enabled(self, name: str) -> bool:
+        return self.controls_enabled.get(name, False)
 
     def cleanup(self):
         if self.camera is not None:

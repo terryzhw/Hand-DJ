@@ -14,6 +14,10 @@ class ControlPage(BasePage):
     def __init__(self, on_back_callback, overlay=None, audio_file_name=None):
         # Store references to the overlay controller and audio file information
         self.overlay = overlay
+        # Track toggle buttons so we can update their state
+        self.pitch_toggle_button = None
+        self.reverb_toggle_button = None
+        self.volume_toggle_button = None
 
         # Get song name
         if audio_file_name:
@@ -25,6 +29,11 @@ class ControlPage(BasePage):
         self.update_timer.timeout.connect(self.update_stats)
         self.update_timer.start(100) # Updating every 100 ms
         super().__init__(on_back_callback, "HandDJ Controller")
+
+    # Helper to attach controller after page creation
+    def set_overlay(self, overlay):
+        self.overlay = overlay
+        self.update_toggle_buttons()
 
     def create_base_page(self):
         self.main_layout = QVBoxLayout()
@@ -91,6 +100,14 @@ class ControlPage(BasePage):
             </p>
             """
 
+    def is_control_enabled(self, name: str) -> bool:
+        if self.overlay and hasattr(self.overlay, 'is_control_enabled'):
+            try:
+                return self.overlay.is_control_enabled(name)
+            except Exception:
+                return True
+        return False
+
     def format_live_stats(self, stats):
         # Extract and format numerical values for display
         pitch_val = f"{stats['pitch']:.2f}"
@@ -99,6 +116,11 @@ class ControlPage(BasePage):
         volume_percent = f"{stats['volume'] * 100:.0f}%"
         
         playback_info = self.get_playback_info()
+
+        pitch_on = self.is_control_enabled('pitch')
+        reverb_on = self.is_control_enabled('reverb')
+        volume_on = self.is_control_enabled('volume')
+        off_tag = "<span style='color:#9e9e9e;'> (Disabled)</span>"
         
         return f"""
         <h2>Audio Statistics</h2>
@@ -106,15 +128,15 @@ class ControlPage(BasePage):
             {playback_info}
             <tr>
                 <td style="width: 50%;"><b>Pitch:</b></td>
-                <td style="color: #4CAF50;">{pitch_val}x</td>
+                <td style="color: #4CAF50;">{pitch_val}x{' ' + off_tag if not pitch_on else ''}</td>
             </tr>
             <tr>
                 <td><b>Volume:</b></td>
-                <td style="color: #2196F3;">{volume_val} ({volume_percent})</td>
+                <td style="color: #2196F3;">{volume_val} ({volume_percent}){' ' + off_tag if not volume_on else ''}</td>
             </tr>
             <tr>
                 <td><b>Reverb:</b></td>
-                <td style="color: #FF9800;">{reverb_val}</td>
+                <td style="color: #FF9800;">{reverb_val}{' ' + off_tag if not reverb_on else ''}</td>
             </tr>
         </table>
     
@@ -205,15 +227,90 @@ class ControlPage(BasePage):
 
         # Add buttons layout to main layout
         layout.addLayout(buttons_layout)
+
+        # Add enable/disable control buttons
+        toggles_layout = QHBoxLayout()
+        toggles_layout.setSpacing(10)
+
+        self.pitch_toggle_button = QPushButton("Pitch: On")
+        self.pitch_toggle_button.setFont(QFont("Arial", BUTTON_FONT_SIZE))
+        self.pitch_toggle_button.setStyleSheet(BUTTON_STYLE)
+        self.pitch_toggle_button.clicked.connect(self.toggle_pitch_control)
+
+        self.volume_toggle_button = QPushButton("Volume: On")
+        self.volume_toggle_button.setFont(QFont("Arial", BUTTON_FONT_SIZE))
+        self.volume_toggle_button.setStyleSheet(BUTTON_STYLE)
+        self.volume_toggle_button.clicked.connect(self.toggle_volume_control)
+
+        self.reverb_toggle_button = QPushButton("Reverb: On")
+        self.reverb_toggle_button.setFont(QFont("Arial", BUTTON_FONT_SIZE))
+        self.reverb_toggle_button.setStyleSheet(BUTTON_STYLE)
+        self.reverb_toggle_button.clicked.connect(self.toggle_reverb_control)
+
+        toggles_layout.addWidget(self.pitch_toggle_button)
+        toggles_layout.addWidget(self.volume_toggle_button)
+        toggles_layout.addWidget(self.reverb_toggle_button)
+
+        layout.addLayout(toggles_layout)
         
         widget.setLayout(layout)
+
+        # Initialize buttons according to overlay state
+        self.update_toggle_buttons()
         return widget
 
+    def update_toggle_buttons(self):
+        # Update button text and enabled state based on overlay/control states
+        has_overlay = bool(self.overlay)
+        for btn in [self.pitch_toggle_button, self.volume_toggle_button, self.reverb_toggle_button]:
+            if btn:
+                btn.setEnabled(has_overlay)
+        if not has_overlay:
+            return
+        try:
+            pitch_on = self.is_control_enabled('pitch')
+            volume_on = self.is_control_enabled('volume')
+            reverb_on = self.is_control_enabled('reverb')
+            if self.pitch_toggle_button:
+                self.pitch_toggle_button.setText(f"Pitch: {'On' if pitch_on else 'Off'}")
+            if self.volume_toggle_button:
+                self.volume_toggle_button.setText(f"Volume: {'On' if volume_on else 'Off'}")
+            if self.reverb_toggle_button:
+                self.reverb_toggle_button.setText(f"Reverb: {'On' if reverb_on else 'Off'}")
+        except Exception:
+            pass
+        
     def update_stats(self):
         # Update statistics display in real-time every 100ms
         if hasattr(self, 'stats_label'):
             stats_text = self.generate_stats_text()
             self.stats_label.setText(stats_text)
+        # Periodically refresh button state
+        self.update_toggle_buttons()
+
+    def toggle_pitch_control(self):
+        if not self.overlay or not hasattr(self.overlay, 'toggle_pitch_enabled'):
+            return
+        try:
+            self.overlay.toggle_pitch_enabled()
+        finally:
+            self.update_toggle_buttons()
+
+    def toggle_reverb_control(self):
+        if not self.overlay or not hasattr(self.overlay, 'toggle_reverb_enabled'):
+            return
+        try:
+            self.overlay.toggle_reverb_enabled()
+        finally:
+            self.update_toggle_buttons()
+
+    def toggle_volume_control(self):
+        if not self.overlay or not hasattr(self.overlay, 'toggle_volume_enabled'):
+            return
+        try:
+            self.overlay.toggle_volume_enabled()
+        finally:
+            self.update_toggle_buttons()
 
 
     def reset_audio_params(self):
