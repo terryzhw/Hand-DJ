@@ -1,36 +1,30 @@
 
-# Audio constants
+# Audio settings
 DEFAULT_SAMPLE_RATE = 44100
 DEFAULT_BUFFER_SIZE = 1024
 DEFAULT_VOLUME = 1.0
-DEFAULT_SPEED = 1.0
 DEFAULT_PITCH = 1.0
 DEFAULT_REVERB = 0.0
-DEFAULT_TREBLE = 0.0
 
-# Audio parameter limits
+# Audio limits
 VOLUME_MIN = 0.0
 VOLUME_MAX = 2.0
-SPEED_MIN = 0.1
-SPEED_MAX = 3.0
 PITCH_MIN = 0.1
 PITCH_MAX = 3.0
 REVERB_MIN = 0.0
-REVERB_MAX = 5.0
-TREBLE_MIN = -10.0
-TREBLE_MAX = 10.0
+REVERB_MAX = 2.0  
 
-# Hand tracking parameters 
+# Tracking settings
 DEFAULT_DETECTION_CONFIDENCE = 0.7
 DEFAULT_TRACKING_CONFIDENCE = 0.5  
 DEFAULT_MAX_HANDS = 2
 DEFAULT_MODEL_COMPLEXITY = 1  
 
-# Camera settings 
+# Camera size 
 DEFAULT_CAMERA_WIDTH = 640   
 DEFAULT_CAMERA_HEIGHT = 480  
 
-# Hand landmark indices
+# Hand landmark
 THUMB_TIP = 4
 INDEX_TIP = 8
 MIDDLE_TIP = 12
@@ -38,7 +32,7 @@ RING_TIP = 16
 PINKY_TIP = 20
 WRIST = 0
 
-# Distance ranges for hand gestures
+# Distance ranges for hand
 PITCH_DISTANCE_MIN = 30
 PITCH_DISTANCE_MAX = 150
 REVERB_DISTANCE_MIN = 30
@@ -46,11 +40,11 @@ REVERB_DISTANCE_MAX = 150
 VOLUME_DISTANCE_MIN = 50
 VOLUME_DISTANCE_MAX = 300
 
-# Audio parameter ranges
+# Audio ranges
 PITCH_RANGE_MIN = 0.5
 PITCH_RANGE_MAX = 3.0
 REVERB_RANGE_MIN = 0.0
-REVERB_RANGE_MAX = 5.0
+REVERB_RANGE_MAX = 2.0
 VOLUME_RANGE_MIN = 0.0
 VOLUME_RANGE_MAX = 2.0
 
@@ -62,7 +56,7 @@ BUTTON_PRESSED_COLOR = "#2a2a2a"
 INPUT_BACKGROUND_COLOR = "#2a2a2a"
 TEXT_COLOR = "white"
 
-# File paths and naming
+# File path and naming
 TEMP_FILE_PREFIX = "handdj_"
 TEMP_FILE_SUFFIX = ".wav"
 DEFAULT_AUDIO_FILES = ["testing.mp3", "test_audio.wav", "audio.mp3", "music.mp3"]
@@ -71,7 +65,7 @@ DEFAULT_AUDIO_FILES = ["testing.mp3", "test_audio.wav", "audio.mp3", "music.mp3"
 PARAMETER_UPDATE_INTERVAL = 0.5
 PROGRESS_UPDATE_INTERVAL = 0.1
 
-# Smoothing parameters
+# Smoothing settings
 SMOOTHING_FACTOR = 0.2
 VOLUME_SMOOTHING_FACTOR = 0.1
 BUFFER_SIZE = 5 

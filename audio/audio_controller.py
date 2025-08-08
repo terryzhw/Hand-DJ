@@ -1,3 +1,4 @@
+
 import time
 import threading
 from typing import List
@@ -6,6 +7,8 @@ from modules.constants import *
 
 
 class AudioController:
+
+    # Central command center in charge of all audio operations
     def __init__(self, sample_rate=DEFAULT_SAMPLE_RATE):
         self.audio_processor = AudioProcessor(sample_rate=sample_rate)
         self.pitch = DEFAULT_PITCH
@@ -19,6 +22,7 @@ class AudioController:
         self.audio_loaded = False
 
     def load_audio(self, audio_file: str) -> bool:
+        # Load audio file and start playback
         try:
             if self.audio_processor.load_file(audio_file) and self.audio_processor.play():
                 self.audio_loaded = True
@@ -27,20 +31,24 @@ class AudioController:
         except Exception:
             return False
 
-    def set_pitch(self, pitch: float):
+    def smooth_pitch(self, pitch: float):
+        # Smooth pitch value to reduce sudden changes
         self.pitch = self.smooth_value(pitch, self.pitch_buffer, self.pitch)
         self.update_parameters()
 
-    def set_reverb(self, reverb: float):
+    def smooth_reverb(self, reverb: float):
+        # Smooth pitch value to reduce sudden changes
         self.reverb = self.smooth_value(reverb, self.reverb_buffer, self.reverb)
         self.update_parameters()
 
-    def set_volume(self, volume: float):
+    def smooth_volume(self, volume: float):
+        # Smooth pitch value to reduce sudden changes and implement immediate volume change
         self.volume = self.smooth_value(volume, self.volume_buffer, self.volume, VOLUME_SMOOTHING_FACTOR)
         if self.audio_loaded:
             self.audio_processor.set_param('volume', self.volume)
 
     def update_parameters(self):
+        # Update audio parameters with rate limiting to prevent excessive processing
         current_time = time.time()
         if current_time - self.last_update_time > PARAMETER_UPDATE_INTERVAL:
             with self.parameter_update_lock:
@@ -50,6 +58,7 @@ class AudioController:
             self.last_update_time = current_time
 
     def smooth_value(self, new_value: float, buffer: List[float], current_value: float, smoothing_factor: float = SMOOTHING_FACTOR) -> float:
+        # Apply smoothing to reduce jitter in parameter values
         buffer.append(new_value)
         if len(buffer) > BUFFER_SIZE:
             buffer.pop(0)
@@ -57,9 +66,11 @@ class AudioController:
         return current_value + smoothing_factor * (avg_value - current_value)
 
     def get_stats(self):
+        # Return current audio parameter values for display in statistics
         return {"pitch": self.pitch, "reverb": self.reverb, "volume": self.volume}
 
     def reset_parameters(self):
+        # Reset all audio parameters
         self.pitch = DEFAULT_PITCH
         self.volume = DEFAULT_VOLUME
         self.reverb = DEFAULT_REVERB
@@ -69,10 +80,11 @@ class AudioController:
         if self.audio_loaded:
             self.audio_processor.set_params({
                 'pitch': DEFAULT_PITCH, 'reverb': DEFAULT_REVERB, 
-                'treble': DEFAULT_TREBLE, 'volume': DEFAULT_VOLUME
+                'volume': DEFAULT_VOLUME
             })
 
     def toggle_playback(self):
+        # Toggle between play and pause states
         if not self.audio_loaded:
             return
         if self.audio_processor.is_playing:
