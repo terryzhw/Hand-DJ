@@ -1,4 +1,3 @@
-
 from modules.constants import *
 
 # Button styling

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QStackedWidget
 from PyQt5.QtGui import QIcon
 from gui.instructions_page import InstructionsPage
 from gui.play_page import PlayPage
-from gui.stats_page import StatsPage
+from gui.control_page import ControlPage
 from gui.styles import BACKGROUND_STYLE
 from tracking.dj_controller import DJController
 from gui.main_page import MainPage
@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
             on_back_callback=self.navigate_to_main_page,
             on_play_callback=self.navigate_to_stats_page
         )
-        self.stats_page = StatsPage(on_back_callback=self.navigate_to_main_page, overlay=None)
+        self.stats_page = ControlPage(on_back_callback=self.navigate_to_main_page, overlay=None)
         self.current_song_title = "Unknown Song"
 
     def add_pages_to_navigation(self):
@@ -68,14 +68,12 @@ class MainWindow(QMainWindow):
         # Navigate to stats page with optional song title and dj_controller
         if song_title:
             self.current_song_title = song_title
-            # Update the stats page with the new song title
             self.stats_page.audio_file_name = song_title
             if hasattr(self.stats_page, 'song_title_label'):
                 self.stats_page.song_title_label.setText(f"♪ {song_title}")
         
         if dj_controller:
             self.dj_controller = dj_controller
-            # Update the stats page overlay connection
             self.stats_page.overlay = dj_controller
             
         self.page_stack.setCurrentWidget(self.stats_page)

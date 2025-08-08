@@ -6,15 +6,25 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, QTimer
 from gui.base_page import BasePage
 from gui.styles import BUTTON_FONT_SIZE, BUTTON_STYLE, SUBTITLE_FONT_SIZE
-class StatsPage(BasePage):
+
+class ControlPage(BasePage):
+
+    # Allows for real-time stats of pitch, bass, reverb and also buttons to control the program
  
     def __init__(self, on_back_callback, overlay=None, audio_file_name=None):
+        # Store references to the overlay controller and audio file information
         self.overlay = overlay
-        self.audio_file_name = audio_file_name or "Unknown Song"
+
+        # Get song name
+        if audio_file_name:
+            self.audio_file_name = audio_file_name
+        else:
+            self.audio_file_name = "Unknown Song"
+        
         self.update_timer = QTimer()
         self.update_timer.timeout.connect(self.update_stats)
-        self.update_timer.start(100) # in ms
-        super().__init__(on_back_callback, "HandDJ Statistics")
+        self.update_timer.start(100) # Updating every 100 ms
+        super().__init__(on_back_callback, "HandDJ Controller")
 
     def create_base_page(self):
         self.main_layout = QVBoxLayout()
@@ -24,7 +34,6 @@ class StatsPage(BasePage):
         title = self.create_title_label()
         self.main_layout.addWidget(title)
         self.main_layout.addStretch()
-
         self.setup_content(self.main_layout)
 
         self.main_layout.addStretch()
@@ -32,7 +41,7 @@ class StatsPage(BasePage):
         self.setLayout(self.main_layout)
 
     def setup_content(self, layout):
-
+        # Layout of the page
         song_info = self.create_song_info_widget()
         stats = self.create_stats_widget()
         controls = self.create_controls_widget()
@@ -42,7 +51,7 @@ class StatsPage(BasePage):
         layout.insertWidget(3, controls)
 
     def create_stats_widget(self):
-
+        # Create container for stats display
         widget = QWidget()
         layout = QVBoxLayout()
         layout.setSpacing(15)
@@ -54,7 +63,6 @@ class StatsPage(BasePage):
         return widget
 
     def create_stats_label(self):
-
         stats_text = self.generate_stats_text()
         stats_label = QLabel(stats_text)
         stats_label.setFont(QFont("Arial", 12))
@@ -63,16 +71,18 @@ class StatsPage(BasePage):
         return stats_label
 
     def generate_stats_text(self):
-
+        # Generate HTML-formatted statistics text based on overlay state
         if self.overlay and hasattr(self.overlay, 'get_stats'):
             try:
+                # Get real-time statistics 
                 stats = self.overlay.get_stats()
                 return self.format_live_stats(stats)
             except Exception as e:
                 return f"<h2>Error Getting Stats</h2><p>Error: {str(e)}</p>"
         else:
+            # Display waiting message when no audio is loaded
             return """
-            <h2>🎵 Waiting for Audio...</h2>
+            <h2>Waiting for Audio...</h2>
             <p style='color: #90CAF9; text-align: center; font-style: italic;'>
                 Please start playing a song to see real-time statistics.
             </p>
@@ -82,15 +92,18 @@ class StatsPage(BasePage):
             """
 
     def format_live_stats(self, stats):
-
+        # Extract and format numerical values for display
         pitch_val = f"{stats['pitch']:.2f}"
         reverb_val = f"{stats['reverb']:.2f}"
         volume_val = f"{stats['volume']:.2f}"
         volume_percent = f"{stats['volume'] * 100:.0f}%"
         
+        playback_info = self.get_playback_info()
+        
         return f"""
-        <h2>🎵 Current Audio Statistics</h2>
+        <h2>Audio Statistics</h2>
         <table style="width: 100%; color: white; border-spacing: 10px;">
+            {playback_info}
             <tr>
                 <td style="width: 50%;"><b>Pitch:</b></td>
                 <td style="color: #4CAF50;">{pitch_val}x</td>
@@ -108,12 +121,12 @@ class StatsPage(BasePage):
         """
 
     def get_playback_info(self):
-
+        # Get current playback status information for display
         if hasattr(self.overlay, 'audio_controller'):
             if hasattr(self.overlay.audio_controller, 'audio_loaded') and self.overlay.audio_controller.audio_loaded:
                 is_playing = getattr(self.overlay.audio_controller.audio_processor, 'is_playing', False)
                 status = "Playing" if is_playing else "Paused"
-                color = "#4CAF50" if is_playing else "#FF5722"
+                color = "#4CAF50" if is_playing else "#FF5722"  
                 return f"""
             <tr>
                 <td><b>Status:</b></td>
@@ -126,12 +139,12 @@ class StatsPage(BasePage):
             </tr>"""
 
     def create_song_info_widget(self):
-
+        # Create widget to display current song information
         widget = QWidget()
         layout = QVBoxLayout()
         layout.setSpacing(10)
         
-
+        # Create and style the song title label with music note icon
         self.song_title_label = QLabel(f"♪ {self.audio_file_name}")
         self.song_title_label.setFont(QFont("Arial", SUBTITLE_FONT_SIZE, QFont.Bold))
         self.song_title_label.setAlignment(Qt.AlignCenter)
@@ -143,28 +156,28 @@ class StatsPage(BasePage):
         return widget
 
     def create_controls_widget(self):
-
+        # Create widget containing control buttons for audio manipulation
         widget = QWidget()
         layout = QVBoxLayout()
         layout.setSpacing(15)
         
-
+        # Create horizontal layout for buttons
         buttons_layout = QHBoxLayout()
         buttons_layout.setSpacing(10)
         
-
+        # Create Reset button to restore default audio parameters
         self.reset_button = QPushButton("Reset")
         self.reset_button.setFont(QFont("Arial", BUTTON_FONT_SIZE))
         self.reset_button.setStyleSheet(BUTTON_STYLE)
         self.reset_button.clicked.connect(self.reset_audio_params)
         
-
+        # Create Play/Pause toggle button
         self.toggle_button = QPushButton("Play/Pause")
         self.toggle_button.setFont(QFont("Arial", BUTTON_FONT_SIZE))
         self.toggle_button.setStyleSheet(BUTTON_STYLE)
         self.toggle_button.clicked.connect(self.toggle_playback)
         
-
+        # Create Quit button with red styling for emphasis
         self.quit_button = QPushButton("Quit")
         self.quit_button.setFont(QFont("Arial", BUTTON_FONT_SIZE))
         self.quit_button.setStyleSheet("""
@@ -185,26 +198,26 @@ class StatsPage(BasePage):
         """)
         self.quit_button.clicked.connect(self.quit_handdj)
         
+        # Add all buttons to the horizontal layout
         buttons_layout.addWidget(self.reset_button)
         buttons_layout.addWidget(self.toggle_button)
         buttons_layout.addWidget(self.quit_button)
 
-        
+        # Add buttons layout to main layout
         layout.addLayout(buttons_layout)
         
         widget.setLayout(layout)
         return widget
 
     def update_stats(self):
-        # Update statistics display in real-time
+        # Update statistics display in real-time every 100ms
         if hasattr(self, 'stats_label'):
             stats_text = self.generate_stats_text()
             self.stats_label.setText(stats_text)
 
 
-
     def reset_audio_params(self):
-        # Reset audio parameters to defaults
+        # Reset audio parameters to default values
         try:
             if self.overlay and hasattr(self.overlay, 'audio_controller'):
                 self.overlay.audio_controller.reset_parameters()
@@ -215,7 +228,7 @@ class StatsPage(BasePage):
             QMessageBox.critical(self, "Error", f"Failed to reset parameters: {str(e)}")
 
     def toggle_playback(self):
-        # Toggle play/pause state
+        # Toggle between play and pause states for audio playback
         try:
             if self.overlay and hasattr(self.overlay, 'audio_controller'):
                 self.overlay.audio_controller.toggle_playback()
@@ -225,7 +238,7 @@ class StatsPage(BasePage):
             QMessageBox.critical(self, "Error", f"Failed to toggle playback: {str(e)}")
 
     def quit_handdj(self):
-    
+        # Quit the HandDJ application with confirmation dialog
         reply = QMessageBox.question(
             self, 
             "Quit", 
@@ -235,27 +248,27 @@ class StatsPage(BasePage):
         )
         
         if reply == QMessageBox.Yes:
+            # Clean up overlay resources if available
             try:
                 if self.overlay and hasattr(self.overlay, 'cleanup'):
                     self.overlay.cleanup()
             except Exception:
                 pass  
             
-   
+            # Remove temporary audio file
             try:
                 import os
                 temp_audio_file = "youtube_audio.wav"
                 if os.path.exists(temp_audio_file):
                     os.remove(temp_audio_file)
             except Exception:
-                pass 
+                pass  #
             
-     
             import sys
             sys.exit(0)
 
     def closeEvent(self, event):
-
+        # Clean up resources when the window is closed
         if hasattr(self, 'update_timer'):
             self.update_timer.stop()
         super().closeEvent(event)

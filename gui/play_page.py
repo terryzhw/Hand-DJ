@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (
-    QVBoxLayout, QLabel, QPushButton, QLineEdit, QMessageBox
+    QLabel, QPushButton, QLineEdit, QMessageBox
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
@@ -66,7 +66,10 @@ class PlayPage(BasePage):
         audio_data = audio_fetcher.fetch(youtube_url)
         
         # Get the video title
-        video_title = audio_fetcher.video_title or "Unknown Song"
+        if audio_fetcher.video_title:
+            video_title = audio_fetcher.video_title
+        else:
+            video_title = "Unknown Song"
 
         temp_audio_file = "youtube_audio.wav"
         audio_data.export(temp_audio_file, format="wav")
