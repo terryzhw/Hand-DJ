@@ -45,7 +45,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and [P
 $ git clone https://github.com/terryzhw/hand-recognition
 
 # Go into the repository
-$ cd hand-recognition
+$ cd hand-dj
 
 # Install dependencies (macOS)
 $ pip install -r mac_requirements.txt
