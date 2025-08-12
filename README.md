@@ -2,7 +2,7 @@
   <br>
   HandDJ
   <br>
-  ![Imgur](https://imgur.com/bbJzZeZ)
+  [Imgur](https://imgur.com/bbJzZeZ)
   <br>
 </h1>
 
