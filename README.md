@@ -2,7 +2,7 @@
   <br>
   HandDJ
   <br>
-  <a href="#"><img src="https://imgur.com/bbJzZeZ" alt="HandDJ" width="200"></a>
+  <a href="#"><img src="https://imgur.com/a/fsOMHEV" alt="HandDJ" width="200"></a>
   <br>
 </h1>
 
