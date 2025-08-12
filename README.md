@@ -2,6 +2,11 @@
   <br>
   HandDJ
   <br>
+<<<<<<< HEAD
+=======
+  ![Imgur](http://i.imgur.com/zTONrOD.jpg)
+  <br>
+>>>>>>> origin/develop
 </h1>
 
 <p align="center">
@@ -109,7 +114,7 @@ This software uses the following open source packages:
 - [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) - Python bindings for Qt application framework
 - [Python](https://python.org/) - Programming language and runtime
 
-For the reverb, I learned much from this: http://sites.music.columbia.edu/cmc/MusicAndComputers/chapter5/05_02.php
+For the reverb, I learned a lot from this: http://sites.music.columbia.edu/cmc/MusicAndComputers/chapter5/05_02.php
 
 ## Support
 
