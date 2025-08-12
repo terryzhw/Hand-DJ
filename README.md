@@ -17,7 +17,6 @@
   <a href="#how-to-use">How To Use</a> •
   <a href="#installation">Installation</a> •
   <a href="#controls">Controls</a> •
-  <a href="#credits">Credits</a> •
   <a href="#license">License</a>
 </p>
 
@@ -68,10 +67,9 @@ $ python hand_dj.py
 
 HandDJ uses computer vision to track your hand movements and translate them into audio controls:
 
-* **Pitch Control** - Move your hand up and down to adjust the pitch of the audio
-* **Volume Control** - Control audio volume through hand positioning
-* **Reverb Effects** - Add reverb effects using specific hand gestures
-* **Real-time Feedback** - Visual indicators show current parameter values
+* **Pitch Control** - Move your left index/thumb up and down to adjust the pitch of the audio
+* **Volume Control** - Mvoe your hands apart/close to adjust volume of the audio
+* **Reverb Effects** - Move your right index/thumb up and down to adjust the reverb of the audio
 
 Navigate through the application using the GUI:
 - **Main Page** - Start here to access all features
@@ -95,16 +93,6 @@ The application requires several Python packages for computer vision, audio proc
 - **Audio processing libraries** - For real-time audio manipulation
 
 Use the provided requirements files for your operating system to ensure compatibility.
-
-## Credits
-
-This software uses the following open source packages:
-
-- [MediaPipe](https://mediapipe.dev/) - Google's framework for building perception pipelines
-- [OpenCV](https://opencv.org/) - Computer vision and image processing
-- [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) - Python bindings for Qt application framework
-
-For the reverb, I learned a lot from this: http://sites.music.columbia.edu/cmc/MusicAndComputers/chapter5/05_02.php
 
 ## Support
 
