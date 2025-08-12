@@ -6,12 +6,12 @@ from modules.constants import *
 
 class Visualizer:
     def __init__(self, camera_width=DEFAULT_CAMERA_WIDTH, camera_height=DEFAULT_CAMERA_HEIGHT):
-
+        # Sets up the visual overlay system with camera dimensions
         self.camera_width = camera_width
         self.camera_height = camera_height
 
     def draw_pitch_control(self, image, landmarks):
-
+        # Draws blue pitch control visualization based on thumb-index finger distance
         thumb_x, thumb_y = landmarks[THUMB_TIP][1], landmarks[THUMB_TIP][2]
         index_x, index_y = landmarks[INDEX_TIP][1], landmarks[INDEX_TIP][2]
         
@@ -33,7 +33,7 @@ class Visualizer:
         return raw_pitch
 
     def draw_reverb_control(self, image, landmarks):
-
+        # Draws red reverb control visualization based on thumb-index finger distance
         thumb_x, thumb_y = landmarks[THUMB_TIP][1], landmarks[THUMB_TIP][2]
         index_x, index_y = landmarks[INDEX_TIP][1], landmarks[INDEX_TIP][2]
         
@@ -55,7 +55,7 @@ class Visualizer:
         return raw_reverb
 
     def draw_volume_control(self, image, left_landmarks, right_landmarks):
-
+        # Draws green volume control visualization based on distance between both hands
         left_thumb_x, left_thumb_y = left_landmarks[THUMB_TIP][1], left_landmarks[THUMB_TIP][2]
         left_index_x, left_index_y = left_landmarks[INDEX_TIP][1], left_landmarks[INDEX_TIP][2]
         right_thumb_x, right_thumb_y = right_landmarks[THUMB_TIP][1], right_landmarks[THUMB_TIP][2]
@@ -76,8 +76,8 @@ class Visualizer:
         raw_volume = np.clip(raw_volume, VOLUME_RANGE_MIN, VOLUME_RANGE_MAX)
 
 
-        cv2.line(image, (left_thumb_x, left_thumb_y), (left_index_x, left_index_y), (0, 255, 0), 2)
-        cv2.line(image, (right_thumb_x, right_thumb_y), (right_index_x, right_index_y), (0, 255, 0), 2)
+        cv2.line(image, (left_thumb_x, left_thumb_y), (left_index_x, left_index_y), (255, 255, 255), 2)
+        cv2.line(image, (right_thumb_x, right_thumb_y), (right_index_x, right_index_y), (255, 255, 255), 2)
 
         cv2.circle(image, (left_mid_x, left_mid_y), 10, (0, 255, 0), cv2.FILLED)
         cv2.circle(image, (right_mid_x, right_mid_y), 10, (0, 255, 0), cv2.FILLED)
@@ -91,6 +91,7 @@ class Visualizer:
         return raw_volume
 
     def draw_fps(self, image, previous_time, current_time):
+        # Shows current frame rate in the corner for performance monitoring
         if previous_time > 0:
             fps = 1 / (current_time - previous_time)
             cv2.putText(image, f"FPS: {int(fps)}", (10, 470), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)

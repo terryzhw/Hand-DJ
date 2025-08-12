@@ -1,4 +1,3 @@
-# Reverb effect: adds space/echo with simple presets.
 
 import numpy as np
 from pydub import AudioSegment
@@ -99,7 +98,7 @@ class ReverbEffect:
         return ir.astype(np.float32)
 
     def wet_dry(self, amount: float) -> Tuple[float, float]:
-        # Equal-power blend between original (dry) and reverb (wet)
+        # Equal-power blend between original and reverb 
         t = float(np.clip(amount / 2.0, 0.0, 1.0))
         a = t * (np.pi / 2.0)
         return float(np.sin(a)), float(np.cos(a))
