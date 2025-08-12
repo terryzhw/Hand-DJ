@@ -99,7 +99,7 @@ Use the provided requirements files for your operating system to ensure compatib
 
 <p align="center">
   <img src="assets/menu.png" alt="play" width="300">
-  <img src="assets/instruction.png" alt="instructions" width="300">
+  <img src="assets/instructions.png" alt="instructions" width="300">
   <img src="assets/play.png" alt="play" width="300">
 </p>
 
