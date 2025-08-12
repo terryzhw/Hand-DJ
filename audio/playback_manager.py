@@ -17,7 +17,7 @@ class PlaybackManager:
     def __init__(self, sample_rate: int, buffer_size: int, 
                  progress_callback: Optional[Callable[[float, float], None]] = None,
                  status_callback: Optional[Callable[[str], None]] = None):
-
+        # Initialize pygame mixer with specified audio settings
         pygame.mixer.pre_init(frequency=sample_rate, size=-16, channels=2, buffer=buffer_size)
         pygame.mixer.init()
         
@@ -35,7 +35,7 @@ class PlaybackManager:
         self.status_callback = status_callback
 
     def play(self, audio: AudioSegment, start_position_s: float = 0.0) -> bool:
-
+        # Start playing audio from a specific position with progress tracking
         if not isinstance(audio, AudioSegment):
             self.notify_status("Error: Invalid audio data")
             return False
@@ -95,7 +95,7 @@ class PlaybackManager:
         return self.current_position_ms / 1000.0
 
     def save_to_temp(self, audio: AudioSegment) -> Optional[str]:
-
+        # Save audio to temporary file for pygame playback
         try:
             temp_fd, temp_path = tempfile.mkstemp(suffix=TEMP_FILE_SUFFIX, prefix=TEMP_FILE_PREFIX)
             os.close(temp_fd)
@@ -127,7 +127,7 @@ class PlaybackManager:
             self.playback_thread.start()
 
     def track_progress(self):
-
+        # Background thread that monitors playback progress and updates callbacks
         while self.is_playing and not self.stop_thread:
 
             if not pygame.mixer.music.get_busy():

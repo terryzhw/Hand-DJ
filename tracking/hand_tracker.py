@@ -1,12 +1,12 @@
-# Hand tracking module using MediaPipe for detecting and tracking hand landmarks
-# Provides real-time hand detection and landmark extraction for gesture recognition
 
 import cv2
 import mediapipe as mp
 from typing import List, Optional
 
 class HandDetector:
+    # Low-level hand detection using MediaPipe Hands solution
     def __init__(self, static_image_mode=False, max_hands=2, model_complexity=1, detection_confidence=0.7, track_confidence=0.5):
+
 
         self.static_image_mode = static_image_mode     
         self.max_hands = max_hands                      
@@ -24,7 +24,9 @@ class HandDetector:
             min_tracking_confidence=self.track_confidence
         )
 
+
         self.mp_draw = mp.solutions.drawing_utils
+
 
         self.results = None
         
@@ -33,15 +35,19 @@ class HandDetector:
         self.cached_bgr_image = None
 
     def find_hands(self, image, draw=True):
+        # Detect hands in the input image and optionally draw landmarks
 
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image_rgb.flags.writeable = False 
+        image_rgb.flags.writeable = False  
         
 
+
         self.results = self.hands.process(image_rgb)
-        image_rgb.flags.writeable = True   
+        image_rgb.flags.writeable = True  
 
 
+        # Draw hand landmarks if hands are detected 
+        
         if self.results.multi_hand_landmarks:
             for hand_landmarks in self.results.multi_hand_landmarks:
                 if draw:
@@ -49,23 +55,27 @@ class HandDetector:
                         image, 
                         hand_landmarks, 
                         self.mp_hands.HAND_CONNECTIONS,
-                        landmark_drawing_spec=self.mp_draw.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=2),
-                        connection_drawing_spec=self.mp_draw.DrawingSpec(color=(0, 255, 0), thickness=2)
+                        landmark_drawing_spec=self.mp_draw.DrawingSpec(color=(0, 0, 0), thickness=2, circle_radius=2),
+                        connection_drawing_spec=self.mp_draw.DrawingSpec(color=(255, 255, 255), thickness=2)
                     )
         return image
 
     def find_position(self, image, hand_no=0, draw=True):
+        # Extract landmark positions for a specific hand
 
         landmark_list = []
         if self.results.multi_hand_landmarks:
             if hand_no < len(self.results.multi_hand_landmarks):
                 my_hand = self.results.multi_hand_landmarks[hand_no]
+
                 for id, landmark in enumerate(my_hand.landmark):
        
+                  
                     h, w, c = image.shape
                     cx, cy = int(landmark.x * w), int(landmark.y * h)
                     landmark_list.append([id, cx, cy])
 
+       
                     if draw:
                         cv2.circle(image, (cx, cy), 7, (255, 0, 255), cv2.FILLED)
         return landmark_list
@@ -77,6 +87,7 @@ class HandDetector:
         return None
 
 class HandTracker:
+    # High-level hand tracking interface that manages left and right hand states
 
     
     def __init__(self, detection_confidence=0.8, max_hands=2):
@@ -84,14 +95,18 @@ class HandTracker:
         self.hand_detector = HandDetector(detection_confidence=detection_confidence, max_hands=max_hands)
         
 
+        # Track hand presence and landmark data separately for each hand
         self.left_hand_present = False
         self.right_hand_present = False
         self.left_hand_landmarks: Optional[List[List[int]]] = None
         self.right_hand_landmarks: Optional[List[List[int]]] = None
 
     def process_hands(self, image: cv2.typing.MatLike):
+        # Process an image frame to detect and track hands
+
 
         image = self.hand_detector.find_hands(image)
+
         self.reset_hand_states()
 
     
@@ -105,7 +120,6 @@ class HandTracker:
 
                 hand_type = self.hand_detector.get_hand_type(hand_index, handedness_list)
 
-
                 if hand_type == "Right":
                     self.right_hand_landmarks = landmarks
                     self.right_hand_present = True
@@ -115,12 +129,10 @@ class HandTracker:
         return image
 
     def reset_hand_states(self):
-
         self.left_hand_present = False
         self.right_hand_present = False
         self.left_hand_landmarks = None
         self.right_hand_landmarks = None
 
     def cleanup(self):
-
         cv2.destroyAllWindows()

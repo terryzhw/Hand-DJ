@@ -1,3 +1,6 @@
+# Control interface that displays real-time audio statistics and provides interactive controls
+# Shows pitch, volume, reverb values with enable/disable toggles and playback controls
+
 from PyQt5.QtWidgets import (
     QVBoxLayout, QLabel, QWidget, QPushButton, 
     QHBoxLayout, QMessageBox, QApplication

@@ -1,3 +1,4 @@
+
 import cv2
 import time
 import os
@@ -12,7 +13,7 @@ from modules.constants import *
 
 class DJController:
     def __init__(self, audio_file: str = "audio.wav"):
-
+        # Initialize the DJ controller with camera, audio, and hand tracking components
         self.camera_width, self.camera_height = DEFAULT_CAMERA_WIDTH, DEFAULT_CAMERA_HEIGHT
         
 
@@ -92,7 +93,7 @@ class DJController:
         return self.initialization_complete and self.camera is not None and self.hand_tracker is not None
 
     def run(self):
-
+        # Main control loop that processes camera frames and updates audio parameters
         while True:
             if not self.is_ready():
    
@@ -144,7 +145,7 @@ class DJController:
         return frame
 
     def smooth_landmarks(self, current_landmarks, previous_landmarks, smoothing_factor=0.3):
-
+        # Apply smoothing to hand landmarks to reduce jitter in gesture recognition
         if previous_landmarks is None:
             return current_landmarks
         
@@ -158,8 +159,7 @@ class DJController:
         return smoothed_landmarks
 
     def update_controls_with_smoothing(self, frame):
-
-
+        # Process hand gestures and update audio parameters with smoothing applied
         if self.hand_tracker.left_hand_present and self.hand_tracker.left_hand_landmarks:
    
             smoothed_left = self.smooth_landmarks(
