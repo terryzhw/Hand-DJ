@@ -2,11 +2,15 @@
   <br>
   HandDJ
   <br>
-  <a href="#"><img src="https://imgur.com/bbJzZeZ" alt="HandDJ" width="200"></a>
-  <br>
 </h1>
 
+<p align="center">
+  <img src="demo.gif" alt="HandDJ Demo" width="600">
+</p>
+
 <h4 align="center">A gesture-controlled DJ application built using <a href="https://mediapipe.dev/" target="_blank">MediaPipe</a>.</h4>
+
+
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
