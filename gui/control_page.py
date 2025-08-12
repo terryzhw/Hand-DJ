@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (
     QVBoxLayout, QLabel, QWidget, QPushButton, 
-    QHBoxLayout, QMessageBox
+    QHBoxLayout, QMessageBox, QApplication
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, QTimer
@@ -27,7 +27,10 @@ class ControlPage(BasePage):
         
         self.update_timer = QTimer()
         self.update_timer.timeout.connect(self.update_stats)
-        self.update_timer.start(100) # Updating every 100 ms
+        # Reduce update frequency on macOS to prevent GUI blocking
+        import platform
+        update_interval = 300 if platform.system() == 'Darwin' else 100
+        self.update_timer.start(update_interval)
         super().__init__(on_back_callback, "HandDJ Controller")
 
     # Helper to attach controller after page creation
@@ -281,17 +284,25 @@ class ControlPage(BasePage):
             pass
         
     def update_stats(self):
-        # Update statistics display in real-time every 100ms
+        # Update statistics display in real-time
         if hasattr(self, 'stats_label'):
             stats_text = self.generate_stats_text()
             self.stats_label.setText(stats_text)
-        # Periodically refresh button state
-        self.update_toggle_buttons()
+        # Less frequent update to prevent GUI blocking
+        if hasattr(self, '_update_counter'):
+            self._update_counter += 1
+        else:
+            self._update_counter = 0
+        # Only update buttons every 3rd timer cycle to reduce Qt event loop pressure
+        if self._update_counter % 3 == 0:
+            self.update_toggle_buttons()
 
     def toggle_pitch_control(self):
         if not self.overlay or not hasattr(self.overlay, 'toggle_pitch_enabled'):
             return
         try:
+            # Force process pending events to ensure GUI responsiveness
+            QApplication.processEvents()
             self.overlay.toggle_pitch_enabled()
         finally:
             self.update_toggle_buttons()
@@ -300,6 +311,7 @@ class ControlPage(BasePage):
         if not self.overlay or not hasattr(self.overlay, 'toggle_reverb_enabled'):
             return
         try:
+            QApplication.processEvents()
             self.overlay.toggle_reverb_enabled()
         finally:
             self.update_toggle_buttons()
@@ -308,6 +320,7 @@ class ControlPage(BasePage):
         if not self.overlay or not hasattr(self.overlay, 'toggle_volume_enabled'):
             return
         try:
+            QApplication.processEvents()
             self.overlay.toggle_volume_enabled()
         finally:
             self.update_toggle_buttons()
@@ -316,6 +329,7 @@ class ControlPage(BasePage):
     def reset_audio_params(self):
         # Reset audio parameters to default values
         try:
+            QApplication.processEvents()
             if self.overlay and hasattr(self.overlay, 'audio_controller'):
                 self.overlay.audio_controller.reset_parameters()
                 QMessageBox.information(self, "Reset", "Audio parameters reset to default values!")
@@ -327,6 +341,7 @@ class ControlPage(BasePage):
     def toggle_playback(self):
         # Toggle between play and pause states for audio playback
         try:
+            QApplication.processEvents()
             if self.overlay and hasattr(self.overlay, 'audio_controller'):
                 self.overlay.audio_controller.toggle_playback()
             else:
