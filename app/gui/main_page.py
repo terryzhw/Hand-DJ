@@ -33,7 +33,7 @@ class MainPage(QWidget):
 
     def create_title_label(self):
         # Create title label
-        title = QLabel("HandDJ")
+        title = QLabel("Menu")
         title.setFont(QFont("Arial", 32, QFont.Bold))
         title.setAlignment(Qt.AlignCenter)
         return title
