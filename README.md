@@ -5,7 +5,7 @@
 </h1>
 
 <p align="center">
-  <img src="demo.gif" alt="HandDJ Demo" width="600">
+  <img src="assets/demo.gif" alt="HandDJ Demo" width="600">
 </p>
 
 <h4 align="center">A gesture-controlled DJ application built using <a href="https://mediapipe.dev/" target="_blank">MediaPipe</a>.</h4>
@@ -15,8 +15,9 @@
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
-  <a href="#installation">Installation</a> •
   <a href="#controls">Controls</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#gallery">Gallery</a> •
   <a href="#license">License</a>
 </p>
 
@@ -93,6 +94,14 @@ The application requires several Python packages for computer vision, audio proc
 - **pygame/pydub/yt-dlp** - For real-time audio manipulation
 
 Use the provided requirements files for your operating system to ensure compatibility.
+
+## Gallery
+
+<p align="center">
+  <img src="assets/menu.png" alt="play" width="300">
+  <img src="assets/instruction.png" alt="instructions" width="300">
+  <img src="assets/play.png" alt="play" width="300">
+</p>
 
 ## Support
 
