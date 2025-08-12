@@ -23,19 +23,15 @@
 
 ## Key Features
 
-* Real-time Hand Tracking - Control your music with natural hand gestures
+* Real-time Hand Tracking - Control music with hand gestures
   - Uses MediaPipe for accurate hand detection and landmark tracking
 * Audio Effects Control
   - Pitch manipulation with smooth transitions
   - Volume control through hand positioning
   - Reverb effects for enhanced sound quality
-* Interactive GUI
-  - Clean, modern interface with multiple control pages
-  - Visual feedback for hand tracking and audio parameters
-  - Easy navigation between different application modes
 * Audio Processing
   - Real-time audio manipulation and effects
-  - Support for various audio file formats
+  - Uses YouTube link to get audio
   - Smooth parameter transitions to prevent audio artifacts
 * Cross Platform
   - Works on Windows and macOS
@@ -80,8 +76,8 @@ HandDJ uses computer vision to track your hand movements and translate them into
 Navigate through the application using the GUI:
 - **Main Page** - Start here to access all features
 - **Instructions Page** - Learn how to use hand controls
-- **Play Page** - Load and control your audio files
-- **Control Page** - Monitor real-time audio parameters and hand tracking
+- **Play Page** - Load YouTube link for audio
+- **Control Page** - Monitor real-time audio parameters and access control buttons
 
 ## Installation
 
@@ -107,7 +103,6 @@ This software uses the following open source packages:
 - [MediaPipe](https://mediapipe.dev/) - Google's framework for building perception pipelines
 - [OpenCV](https://opencv.org/) - Computer vision and image processing
 - [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) - Python bindings for Qt application framework
-- [Python](https://python.org/) - Programming language and runtime
 
 For the reverb, I learned a lot from this: http://sites.music.columbia.edu/cmc/MusicAndComputers/chapter5/05_02.php
 
