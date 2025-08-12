@@ -2,11 +2,6 @@
   <br>
   HandDJ
   <br>
-<<<<<<< HEAD
-=======
-  ![Imgur](http://i.imgur.com/zTONrOD.jpg)
-  <br>
->>>>>>> origin/develop
 </h1>
 
 <p align="center">
