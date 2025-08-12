@@ -91,7 +91,7 @@ The application requires several Python packages for computer vision, audio proc
 
 - **MediaPipe** - Hand tracking and computer vision
 - **OpenCV** - Image processing and camera interface
-- **PyQt5** - Desktop application framework
+- **PyQt5** - GUI library
 - **Audio processing libraries** - For real-time audio manipulation
 
 Use the provided requirements files for your operating system to ensure compatibility.
