@@ -87,10 +87,10 @@ Navigate through the application using the GUI:
 
 The application requires several Python packages for computer vision, audio processing, and GUI:
 
-- **MediaPipe** - Hand tracking and computer vision
-- **OpenCV** - Image processing and camera interface
+- **MediaPipe** - AI/ML tools and techniques
+- **OpenCV** - Computer Vision Library
 - **PyQt5** - GUI library
-- **Audio processing libraries** - For real-time audio manipulation
+- **Pygame/Pydub/yt-dlp** - For real-time audio manipulation
 
 Use the provided requirements files for your operating system to ensure compatibility.
 
