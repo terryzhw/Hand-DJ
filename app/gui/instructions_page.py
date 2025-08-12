@@ -6,7 +6,7 @@ from gui.base_page import BasePage
 class InstructionsPage(BasePage):
     # This page holds the instructions of the program
     def __init__(self, on_back_callback):
-        super().__init__(on_back_callback, "HandDJ Instructions")
+        super().__init__(on_back_callback, "Instructions")
 
     def setup_content(self, layout):
         # Sets up content for the page
@@ -38,7 +38,27 @@ class InstructionsPage(BasePage):
     def create_instructions_label(self):
         # Label to display instruction text
         instructions_text = """
-        <h1>WIP</h1>
+        <h1>How to Use HandDJ</h1>
+        
+        <h2>Getting Started</h2>
+        <p>1. Make sure your camera is connected and working</p>
+        <p>2. Position yourself so your hands are clearly visible to the camera</p>
+        <p>3. Keep good lighting for better hand detection</p>
+        
+        <h2>Hand Controls</h2>
+        <p><b>Pitch Control:</b> Move your left index/thumb finger up and down to change the pitch of your music</p>
+        <p><b>Volume Control:</b> Move hands apart/close to each other to change volume</p>
+        <p><b>Reverb Effects:</b> Move your right index/thumb finger up and down to change the reverb of your music</p>
+        
+        <h2>Using the App</h2>
+        <p><b>Main Page:</b> Start here to access all features</p>
+        <p><b>Play Page:</b> Load YouTube link to play audio</p>
+        <p><b>Control Page:</b> Watch real-time statistics and access control buttons</p>
+        
+        <h2>Tips for Best Results</h2>
+        <p>- Keep your hands steady for precise control</p>
+        <p>- Make clear, non-sudden movements</p>
+        <p>- If tracking stops working, check your camera and lighting</p>
         """
         instructions = QLabel(instructions_text)
         instructions.setFont(QFont("Arial", 12))

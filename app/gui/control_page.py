@@ -34,7 +34,7 @@ class ControlPage(BasePage):
         import platform
         update_interval = 300 if platform.system() == 'Darwin' else 100
         self.update_timer.start(update_interval)
-        super().__init__(on_back_callback, "HandDJ Controller")
+        super().__init__(on_back_callback, "Controller")
 
     # Helper to attach controller after page creation
     def set_overlay(self, overlay):

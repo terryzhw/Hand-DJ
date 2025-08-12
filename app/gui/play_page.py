@@ -12,7 +12,7 @@ import os
 class PlayPage(BasePage):
     # This is the play page where the user can input a YouTube link and the run HandDJ
     def __init__(self, on_back_callback, on_play_callback=None):
-        super().__init__(on_back_callback, "HandDJ Play")
+        super().__init__(on_back_callback, "Play")
         self.on_play_callback = on_play_callback
         self.current_dj_controller = None
 
