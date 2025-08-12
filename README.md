@@ -90,7 +90,7 @@ The application requires several Python packages for computer vision, audio proc
 - **MediaPipe** - AI/ML tools and techniques
 - **OpenCV** - Computer Vision Library
 - **PyQt5** - GUI library
-- **Pygame/Pydub/yt-dlp** - For real-time audio manipulation
+- **pygame/pydub/yt-dlp** - For real-time audio manipulation
 
 Use the provided requirements files for your operating system to ensure compatibility.
 
