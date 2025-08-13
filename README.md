@@ -43,7 +43,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and [P
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/terryzhw/hand-recognition
+$ git clone https://github.com/terryzhw/hand-dj.git
 
 # Go into the repository
 $ cd hand-dj
