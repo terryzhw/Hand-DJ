@@ -43,7 +43,6 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and [P
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/terryzhw/hand-dj.git
 
 # Go into the repository
 $ cd hand-dj
@@ -98,9 +97,9 @@ Use the provided requirements files for your operating system to ensure compatib
 ## Gallery
 
 <p align="center">
-  <img src="assets/menu.png" alt="play" width="300">
-  <img src="assets/instructions.png" alt="instructions" width="300">
-  <img src="assets/play.png" alt="play" width="300">
+  <img src="assets/menu.png" alt="" width="300">
+  <img src="assets/instructions.png" alt="" width="300">
+  <img src="assets/play.png" alt="" width="300">
 </p>
 
 ## Support
